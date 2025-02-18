@@ -1,0 +1,121 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DroneAware</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* Assure que la vidéo occupe tout l'écran sans déborder */
+        }
+
+        .showcase {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Occupe toute la hauteur de l'écran */
+            overflow: hidden;
+        }
+
+        .showcase video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Assure que la vidéo occupe toute la hauteur de la fenêtre */
+            object-fit: cover;
+            opacity: 1; /* Ajuste l'opacité si besoin */
+        }
+
+        .center-text {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: #3544ea;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap; /* Empêche le texte de se couper */
+        }
+        .detect-button1 {
+            position: absolute;
+            top: 70%; /* Place le bouton à 75% de la hauteur de la page */
+            left: 60%;
+            transform: translateX(-50%); /* Centrer horizontalement */
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #383838; /* Couleur du bouton */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            text-decoration: none; 
+        }
+
+        /* Effet de survol du bouton */
+        .detect-button1:hover {
+            background-color: #000000;
+        }
+
+        .detect-button2 {
+            position: absolute;
+            top: 70%; /* Place le bouton à 75% de la hauteur de la page */
+            left: 35%;
+            transform: translateX(-50%); /* Centrer horizontalement */
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            background-color: #383838; /* Couleur du bouton */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            text-decoration: none; 
+        }
+
+        /* Effet de survol du bouton */
+        .detect-button2:hover {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="showcase">
+        <!-- Assurez-vous que le chemin vers la vidéo est correct -->
+        <video src="media/video.mp4" muted loop autoplay class="video"></video>
+
+        <!-- Texte centré et animé lettre par lettre -->
+        <div class="center-text" id="typing-text">
+            <!-- Le texte sera ajouté dynamiquement ici -->
+        </div>
+        <a href="{% url 'Temp_reel' %}" class="detect-button1">Détection temps réel</a>
+        <a href="#" class="detect-button2">Télécharger une vidéo</a>
+    </div>
+
+    <script>
+        // const text = "Système de perception et détection d'obstacles";
+        let index = 0;
+        const typingTextElement = document.getElementById("typing-text");
+
+        function type() {
+            if (index < text.length) {
+                typingTextElement.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 150); // Intervalle entre chaque lettre (en ms)
+            }
+        }
+
+        // Démarre l'animation
+        type();
+
+    </script>
+</body>
+</html>

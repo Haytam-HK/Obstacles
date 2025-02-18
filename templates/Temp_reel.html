@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Détection d'objets en temps réel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .video-container {
+            width: 80%;
+            height: 100vh;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-reel {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .detected-objects {
+            width: 20%;
+            height: 100vh;
+            padding: 20px;
+            background-color: #fff;
+            border-left: 1px solid #ddd;
+            box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+        .detected-objects h2 {
+            margin-top: 0;
+        }
+        .object-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .object-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .object-list li:last-child {
+            border-bottom: none;
+        }
+        .detect-button2 {
+            position: absolute;
+            top: 93%; /* Place le bouton à 75% de la hauteur de la page */
+            left: 18%;
+            transform: translateX(-50%); /* Centrer horizontalement */
+            padding: 8px 16px;
+            font-size: 1.2rem;
+            background-color: #383838; /* Couleur du bouton */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            text-decoration: none; 
+        }
+
+        /* Effet de survol du bouton */
+        .detect-button2:hover {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="detected-objects">
+        <h2>Obstacle identifié</h2>
+        <ul class="object-list" id="object-list">
+            <!-- Les objets détectés seront ajoutés ici dynamiquement -->
+        </ul>
+        <a href="{% url 'index' %}" class="detect-button2" onclick="stopCamera()">Retour</a>
+    </div>
+    <div class="video-container">
+        <img class="video-reel" src="{% url 'video_reel' %}" alt="Flux vidéo">
+    </div>
+
+    <script>
+        const objectList = document.getElementById('object-list');
+
+        function updateDetectedObjects(data) {
+            objectList.innerHTML = '';
+            data.objects.forEach(obj => {
+                const li = document.createElement('li');
+                li.textContent = `${obj.label}, probabilité: ${(obj.confidence* 100).toFixed(2)}%`;
+                objectList.appendChild(li);
+            });
+        }
+
+        function fetchDetectedObjects() {
+            fetch('/get_detected_objects/')
+                .then(response => response.json())
+                .then(data => updateDetectedObjects(data))
+                .catch(error => console.error('Erreur:', error));
+        }
+
+        setInterval(fetchDetectedObjects, 1000);
+        fetchDetectedObjects();
+    function stopCamera() {
+    // Arrêter le flux vidéo côté client
+    const videoElement = document.querySelector('img');  // ou l'élément qui affiche votre vidéo
+    if (videoElement) {
+        videoElement.src = '';
+    }
+}
+    </script>
+</body>
+</html>
