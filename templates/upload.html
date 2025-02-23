@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Télécharger une Vidéo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <style>
+        /* Réinitialisation des styles par défaut */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Conteneur principal */
+        .container {
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Titre de la page */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Formulaire de téléchargement */
+        .upload-form {
+            margin-top: 20px;
+        }
+
+        /* Zone de dépôt de fichier */
+        .file-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input:hover {
+            border-color: #00ff88;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .file-input input[type="file"] {
+            display: none;
+        }
+
+        .file-input label {
+            font-size: 1.2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Bouton de soumission */
+        .button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #00ff88, #00b3ff);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Animation du titre */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Télécharger une Vidéo</h1>
+        <div class="upload-form">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Zone de dépôt de fichier -->
+                <div class="file-input">
+                    <input type="file" name="video" id="video" accept="video/*" required>
+                    <label for="video">Glissez-déposez une vidéo ou cliquez pour sélectionner</label>
+                </div>
+                <!-- Bouton de soumission -->
+                <button type="submit" class="button">Analyser la Vidéo</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Animation pour la zone de dépôt de fichier
+        const fileInput = document.querySelector('.file-input');
+        const input = document.querySelector('input[type="file"]');
+
+        fileInput.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileInput.style.borderColor = '#00ff88';
+            fileInput.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+
+        fileInput.addEventListener('dragleave', () => {
+            fileInput.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            fileInput.style.background = 'rgba(255, 255, 255, 0.05)';
+        });
+
+        fileInput.addEventListener('drop', (e) => {
+            e.preventDefault();
+            input.files = e.dataTransfer.files;
+            fileInput.style.borderColor = '#00ff88';
+            fileInput.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+    </script>
+</body>
+</html>

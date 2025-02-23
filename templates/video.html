@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi-Drone - Détection d'obstacles et assistance de navigation</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #263238;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #607D8B;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .video-feed {
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .video-feed img {
+            width: 100%;
+            display: block;
+        }
+
+        .destination-reached {
+            background-color: #81C784;
+            color: #1B5E20;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 10px 5px;
+        }
+
+        .button:hover {
+            background-color: #1976D2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Flux vidéo -->
+        <div class="video-feed">
+            <img src="{% url 'video_feed' %}" alt="Flux vidéo du drone">
+        </div>
+
+        <!-- Message de destination atteinte -->
+        <div id="destination-message" class="destination-reached">
+            DESTINATION ATTEINTE! Préparation à l'atterrissage...
+        </div>
+
+        <!-- Boutons d'action -->
+        <div style="text-align: center;">
+            <a href="{% url 'index' %}" class="button">Retour</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const destinationMessage = document.getElementById('destination-message');
+
+            // Simuler l'arrivée à destination (pour la démo)
+            setTimeout(() => {
+                destinationMessage.style.display = 'block';
+            }, 5000); // Affiche le message après 5 secondes
+        });
+    </script>
+</body>
+</html>

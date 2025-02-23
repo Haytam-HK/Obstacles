@@ -6,102 +6,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DroneAware</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
     <style>
+        /* Réinitialisation des styles par défaut */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Assure que la vidéo occupe tout l'écran sans déborder */
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: #000;
         }
 
+        /* Conteneur principal */
         .showcase {
             position: relative;
             width: 100%;
-            height: 100vh; /* Occupe toute la hauteur de l'écran */
+            height: 100vh;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alignement en haut de la page */
+            padding-top: 20px; /* Espacement du texte par rapport au haut */
         }
 
+        /* Vidéo de fond */
         .showcase video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* Assure que la vidéo occupe toute la hauteur de la fenêtre */
+            height: 100%;
             object-fit: cover;
-            opacity: 1; /* Ajuste l'opacité si besoin */
+            z-index: 1;
+            opacity: 0.8; /* Légère transparence pour mieux voir le texte */
         }
 
+        /* Texte animé */
         .center-text {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            color: #3544ea;
+            position: relative;
+            z-index: 2;
+            font-size: 2rem;
+            color: #fff;
             text-align: center;
-            font-weight: bold;
-            white-space: nowrap; /* Empêche le texte de se couper */
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 2s ease-in-out;
+            width: 100%;
         }
-        .detect-button1 {
+
+        /* Animation du texte */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Conteneur des boutons */
+        .button-container {
             position: absolute;
-            top: 70%; /* Place le bouton à 75% de la hauteur de la page */
-            left: 60%;
-            transform: translateX(-50%); /* Centrer horizontalement */
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            background-color: #383838; /* Couleur du bouton */
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            gap: 20px; /* Espace entre les boutons */
+        }
+
+        /* Style des boutons */
+        .detect-button1, .detect-button2 {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background-color: rgba(56, 56, 56, 0.8); /* Fond semi-transparent */
             color: white;
-            border: none;
-            border-radius: 5px;
+            border: 2px solid #fff;
+            border-radius: 50px; /* Boutons arrondis */
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease;
-            text-decoration: none; 
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Effet de survol du bouton */
-        .detect-button1:hover {
-            background-color: #000000;
+        /* Effet de survol des boutons */
+        .detect-button1:hover, .detect-button2:hover {
+            background-color: #000;
+            border-color: #3544ea;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(53, 68, 234, 0.5);
         }
 
-        .detect-button2 {
+        /* Animation de fond */
+        .showcase::before {
+            content: '';
             position: absolute;
-            top: 70%; /* Place le bouton à 75% de la hauteur de la page */
-            left: 35%;
-            transform: translateX(-50%); /* Centrer horizontalement */
-            padding: 15px 30px;
-            font-size: 1.5rem;
-            background-color: #383838; /* Couleur du bouton */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease;
-            text-decoration: none; 
-        }
-
-        /* Effet de survol du bouton */
-        .detect-button2:hover {
-            background-color: #000000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.8), rgba(53, 68, 234, 0.5));
+            z-index: 1;
         }
     </style>
 </head>
 <body>
     <div class="showcase">
-        <!-- Assurez-vous que le chemin vers la vidéo est correct -->
+        <!-- Vidéo de fond -->
         <video src="media/video.mp4" muted loop autoplay class="video"></video>
 
-        <!-- Texte centré et animé lettre par lettre -->
+        <!-- Texte animé -->
         <div class="center-text" id="typing-text">
             <!-- Le texte sera ajouté dynamiquement ici -->
         </div>
-        <a href="{% url 'Temp_reel' %}" class="detect-button1">Détection temps réel</a>
-        <a href="#" class="detect-button2">Télécharger une vidéo</a>
+
+        <!-- Conteneur des boutons -->
+        <div class="button-container">
+            <a href="{% url 'Temp_reel' %}" class="detect-button1">Détection temps réel</a>
+            <a href="{% url 'upload_video' %}" class="detect-button2">Télécharger une vidéo</a>
+        </div>
     </div>
 
     <script>
-        // const text = "Système de perception et détection d'obstacles";
+        // Animation de frappe au clavier (optionnel)
+        const text = "Système de perception et détection d'obstacles";
         let index = 0;
         const typingTextElement = document.getElementById("typing-text");
 
@@ -109,13 +143,11 @@
             if (index < text.length) {
                 typingTextElement.innerHTML += text.charAt(index);
                 index++;
-                setTimeout(type, 150); // Intervalle entre chaque lettre (en ms)
+                setTimeout(type, 100); // Vitesse de frappe
             }
         }
 
-        // Démarre l'animation
         type();
-
     </script>
 </body>
 </html>
